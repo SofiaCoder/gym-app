@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const main = require('../../database');
 const joi = require('joi');
+require('dotenv').config();
+const { JWT_SECRET } = process.env;
 
 exports.login = async function login(req, res) {
   try {
@@ -30,14 +32,9 @@ exports.login = async function login(req, res) {
       return res.status(401).send('Wrong username or password');
     }
 
-    const token = jwt.sign(
-      { id: user._id, username: user.username },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '1h',
-      }
-    );
-    res.cookie('authKey', token, {
+    const authToken = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {expiresIn: '1h'})
+
+    res.cookie('authKey', authToken, {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
       sameSite: 'none',
