@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 exports.checkAuthentication = function checkAuthentication(req, res, next) {
-    const {authKey} = req.cookies
+    const { authKey } = req.cookies
 
     if (!authKey) {
         res.status(401).send('Missing authentication token')
@@ -10,8 +10,9 @@ exports.checkAuthentication = function checkAuthentication(req, res, next) {
     }
     try {
         const authKeyDecoded = jwt.verify(authKey, process.env.JWT_SECRET)
-        const { id } = authKeyDecoded
-        req.id = id
+        const { id, username } = authKeyDecoded
+        req.userID = id
+        req.username = username
         res.status(200)
         next()
     }
