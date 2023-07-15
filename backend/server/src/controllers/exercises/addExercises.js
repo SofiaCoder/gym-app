@@ -13,17 +13,22 @@ const validMuscleGroups = [
 
 const schema = joi.object({
   exerciseName: joi.string().min(1).required(),
-  muscleGroup: joi.string().valid(...validMuscleGroups).required(),
+  muscleGroup: joi
+    .string()
+    .valid(...validMuscleGroups)
+    .required(),
+  exerciseDescription: joi.string().optional().allow('')
 });
 
 exports.addExercise = async function addExercise(req, res) {
   try {
     const { exerciseCollection } = await main();
-    const { exerciseName, muscleGroup } = req.body;
+    const { exerciseName, muscleGroup, exerciseDescription } = req.body;
 
     const exerciseBody = {
       exerciseName: exerciseName.toLowerCase(),
       muscleGroup: muscleGroup.toLowerCase(),
+      exerciseDescription: exerciseDescription || '',
     };
 
     const { error } = schema.validate(exerciseBody);
@@ -31,7 +36,9 @@ exports.addExercise = async function addExercise(req, res) {
       return res.status(400).send(error.details[0].message);
     }
 
-    const existingExercise = await exerciseCollection.findOne({ exerciseName: exerciseBody.exerciseName });
+    const existingExercise = await exerciseCollection.findOne({
+      exerciseName: exerciseBody.exerciseName,
+    });
     if (existingExercise) {
       return res.status(400).send('Exercise already exists in the database');
     }
