@@ -1,18 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 import RegisterPage from './pages/RegisterPage';
-import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
 import ExercisePage from './pages/ExercisePage';
-import { SingleExercise } from './pages/SingleExercise';
+import { EditableExercise } from './pages/EditableExercise';
 
 function App() {
   return (
     <div className='App'>
       <Routes>
-        <Route path='/' element={<LandingPage />} />
+        <Route path='/' element={<LoginPage />} />
         <Route path='/RegisterPage' element={<RegisterPage />} />
         <Route path='/ExercisePage' element={<ExercisePage />} />
-        <Route path='/Exercises/:id' element={<SingleExercise />} />
+        <Route path='/Exercises/:id' element={<EditableExercise />} />
       </Routes>
     </div>
   );
