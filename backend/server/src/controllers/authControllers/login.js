@@ -38,7 +38,7 @@ exports.login = async function login(req, res) {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
       sameSite: 'none',
-      secure: true,
+      secure: true
     });
     res.status(200).send('Successfully logged in');
   } catch (err) {
