@@ -1,14 +1,18 @@
-import './App.css';
-import { Route, Routes } from 'react-router-dom'
-import LandingPage from './pages/LandingPage.jsx';
-import AuthPage from './pages/AuthPage.jsx';
+import { Routes, Route } from 'react-router-dom';
+import './App.scss';
+import RegisterPage from './pages/RegisterPage';
+import LandingPage from './pages/LandingPage';
+import ExercisePage from './pages/ExercisePage';
+import { SingleExercise } from './pages/SingleExercise';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Routes>
-        <Route path='/' element={ <AuthPage/> } />
-        <Route path='/LandingPage' element={ <LandingPage/> } />
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/RegisterPage' element={<RegisterPage />} />
+        <Route path='/ExercisePage' element={<ExercisePage />} />
+        <Route path='/Exercises/:id' element={<SingleExercise />} />
       </Routes>
     </div>
   );
