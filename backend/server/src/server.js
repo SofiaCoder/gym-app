@@ -5,15 +5,19 @@ const cors = require('cors');
 const { usersRouter } = require('./routes/usersRouter');
 const { authRouter } = require('./routes/authentication');
 const { friendRouter } = require('./routes/friendRouter');
+const { exerciseRouter } = require('./routes/exerciseRouter');
 server.use(express.json());
 server.use(cookieParser());
-server.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}))
+server.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 
 server.use('/auth', authRouter);
 server.use('/friends', friendRouter);
 server.use('/users', usersRouter);
+server.use('/exercises', exerciseRouter );
 
 exports.server = server;
