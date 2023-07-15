@@ -6,7 +6,7 @@ exports.getAllUsers = async function getAllUsers(req, res) {
 
         const users = await usersCollection.find({}, {projection:{ _id: 0, username: 1 }}).toArray()
         if(users[0].length === 0) {
-            res.status(404).send('There were no users')
+            res.status(404).send('There is no users')
         }  else {
             res.status(200).json(users)
         }
