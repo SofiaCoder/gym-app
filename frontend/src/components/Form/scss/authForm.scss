@@ -1,0 +1,23 @@
+.authForm {
+    border: solid 1px grey;
+    border-radius: 5px;
+    max-width: 15em;
+    padding: 1em;
+    margin-bottom: 0.5em;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        max-width: 15em;
+        align-items: baseline;
+
+
+        input{
+            margin-bottom: 1.5em;
+        }
+        label {
+            margin-bottom: 0.5em;
+        }
+    }
+}

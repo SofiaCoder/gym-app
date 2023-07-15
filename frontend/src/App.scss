@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
+
+body {
+  background-image: url('../public/img/backgroundDarkPlants.jpeg');
+  background-size:cover;
+}
+.App {
+  font-family: 'Roboto Condensed', sans-serif;
+  color:cadetblue;
+  max-width: 90vw;
+  margin: 5vw;
+}
+a {
+  text-decoration: none;
+  font-size: larger;
+  margin-top: 5em;
+  padding: 5px;
+  
+      &:hover {
+          color:cadetblue;
+      }
+}
+
+@media screen and (max-width: 646px) {
+    .App {
+      max-width: 95vw;
+      margin: 2vw;
+    }
+  }
+
+

@@ -1,0 +1,44 @@
+.ExercisePage {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-template-areas: 
+        "header friendPage"
+        "exerciseForm friendPage"
+        "Exercises friendPage"
+        "Exercises friendPage";
+
+    
+    h1 {
+        grid-area: header;
+    }
+    .exerciseForm {
+        grid-area: exerciseForm;
+    }
+    .Exercises {
+        grid-area: Exercises;
+    }
+    .friendPage {
+        grid-area: friendPage;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .ExercisePage {
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: 
+        "header friendPage"
+        "exerciseForm friendPage"
+        "Exercises friendPage"
+        "Exercises friendPage";
+    }
+  }
+  @media screen and (max-width: 512px) {
+    .ExercisePage {
+        grid-template-areas: 
+            "header"
+            "exerciseForm"
+            "Exercises"
+            "Exercises"
+            "friendPage";
+    }
+  } 
