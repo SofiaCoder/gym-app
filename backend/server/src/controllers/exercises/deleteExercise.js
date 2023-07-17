@@ -22,7 +22,6 @@ exports.deleteExercise = async function deleteExercise(req, res) {
     });
     if (result.deletedCount === 1) {
       res.status(200).send('Exercise successfully deleted');
-      console.log(result);
     } else {
       res
         .status(404)
