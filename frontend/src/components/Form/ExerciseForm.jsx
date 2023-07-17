@@ -15,11 +15,11 @@ const ExerciseForm = ({ title, group, submitFunction, btnText }) => {
       }
     };
     startSetHandler();
-  }, []);
+  }, [title, group]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const response = await submitFunction(exerciseName, muscleGroup);
+    const response = await submitFunction(exerciseName, muscleGroup, description);
     setResponse(response);
     setTimeout(() => {
       setResponse('');
@@ -47,6 +47,7 @@ const ExerciseForm = ({ title, group, submitFunction, btnText }) => {
             id='task'
             onChange={(e) => setMuscleGroup(e.target.value)}
           >
+            <option value=''>Select a muscle-group</option>
             <option value='shoulders'>Shoulders</option>
             <option value='chest'>Chest</option>
             <option value='arms'>Arms</option>
@@ -54,7 +55,6 @@ const ExerciseForm = ({ title, group, submitFunction, btnText }) => {
             <option value='back'>Back</option>
             <option value='legs'>Legs</option>
             <option value='cardio'>Cardio</option>
-            <option selected value=''></option>
           </select>
           <label htmlFor='todoText'>Description: </label>
           <textarea
