@@ -2,31 +2,64 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './scss/Exercises.scss';
 import deleteExercise from './functions/deleteExercise';
-import { getExercises } from './functions/getExercises';
+import { getExerciseById } from './functions/getExerciseById';
+import { getPrograms } from './functions/getPrograms';
+import { getAllExercises } from './functions/getAllExercises';
 
 const HandlingExercises = () => {
+  const [programs, setPrograms] = useState();
   const [exercises, setExercises] = useState();
+  const [detailedPrograms, setDetailedPrograms] = useState();
   const [response, setResponse] = useState();
   const navigate = useNavigate();
 
-  const fetchExercises = async () => {
-    const data = await getExercises();
+  //Fetch all the users training programs and store it in programs
+  const fetchPrograms = async () => {
+    const usersPrograms = await getPrograms();
 
-    if (data === 401) {
+    if (usersPrograms === 401) {
       setResponse('You are logged out, redirecting you to login-page');
       setTimeout(() => {
         navigate('/');
       }, 4000);
       return;
     }
-    setExercises(data);
+    setPrograms(usersPrograms);
   };
 
   useEffect(() => {
-    fetchExercises();
+    fetchPrograms();
+    fetchExerciseDetails();
  // eslint-disable-next-line
   }, []);
- 
+
+//fetch exercise details from the exercise collection and store it in detailed programs state
+  const fetchExerciseDetails = async () => {
+
+    const allExercises = getAllExercises();
+
+    if (allExercises === 401) {
+      setResponse('You are logged out, redirecting you to login-page');
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
+      return;
+    }
+    setExercises(allExercises);
+
+  const exerciseIds = programs.map((program) => program.exercises.map(async (exercise) => {
+    const exerciseDetails = await getExerciseById(exercise.exercise_id)
+    //   return {
+    //     ...exerciseDetails,
+    //     sets: exercise.sets,
+    //     reps: exercise.reps
+    //   }
+     })
+     )
+
+    // setDetailedPrograms(exerciseIds)
+  };
+  //console.log(detailedPrograms)
 
   const deleteHandler = async (exerciseID) => {
     const id = exerciseID;
@@ -34,7 +67,7 @@ const HandlingExercises = () => {
     setResponse(response);
     scrollTop();
     setTimeout(() => {
-      fetchExercises();
+      fetchPrograms();
       setResponse('');
     }, 2000);
   };
@@ -47,23 +80,24 @@ const HandlingExercises = () => {
     <>
       <h3>{response}</h3>
       <div className='todoBoxes'>
-        {exercises?.map((exercise, index) => {
+        {programs?.map((program) => {
           return (
-            <div className='todoBox' key={index}>
-              <h3>{exercise.exerciseName}</h3>
-              <h4>{exercise.muscleGroup}</h4>
-              <p>{exercise.exerciseDescription}</p>
+            <div className='todoBox' key={program._id}>
+              <h3>{program.programName}</h3>
+              {program.exercises?.map((exercise, index) => {
+                return (
+                <p key={index}>{exercise.exercise_id}</p>)})}
               <Link
                 className='editLink'
-                to={`/Exercises/${exercise._id}`}
-                state={exercise}
+                to={`/Exercises/${program._id}`}
+                state={program}
               >
                 Edit
               </Link>
               <button
                 className='deleteBtn'
                 onClick={() => {
-                  deleteHandler(exercise._id);
+                  deleteHandler(program._id);
                 }}
               >
                 ❌
