@@ -14,8 +14,9 @@ async function main() {
 
   const usersCollection = database.collection('users');
   const exerciseCollection = database.collection('exercises');
+  const programCollection = database.collection('programs');
 
-  return { usersCollection, exerciseCollection, client };
+  return { usersCollection, exerciseCollection, programCollection, client };
 }
 
 module.exports = main;
