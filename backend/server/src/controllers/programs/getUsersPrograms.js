@@ -8,8 +8,12 @@ exports.getUsersPrograms = async function getUsersPrograms(req, res) {
     const { programCollection } = await main();
 
     const programs = await programCollection
-      .find({ user_id: userID }, { projection: { programName: 1, exercises: 1 } })
+      .find(
+        { user_id: userID },
+        { projection: { programName: 1, exercises: 1 } }
+      )
       .toArray();
+
     if (programs.length === 0) {
       res.status(404).send('There is no programs');
     } else {
