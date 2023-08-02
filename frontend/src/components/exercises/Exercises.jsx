@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './scss/Exercises.scss';
 import deleteExercise from './functions/deleteExercise';
-import { getExerciseById } from './functions/getExerciseById';
 import { getPrograms } from './functions/getPrograms';
-import { getAllExercises } from './functions/getAllExercises';
+import { getDetailedPrograms } from './functions/getDetailedPrograms';
 
 const HandlingExercises = () => {
   const [programs, setPrograms] = useState([]);
   //const [exercises, setExercises] = useState();
-  //const [detailedPrograms, setDetailedPrograms] = useState();
+  const [detailedPrograms, setDetailedPrograms] = useState();
   const [response, setResponse] = useState();
   const navigate = useNavigate();
 
@@ -24,51 +23,53 @@ const HandlingExercises = () => {
       }, 4000);
       return;
     }
-    //setPrograms(usersPrograms);
-    let exerciseInfo = [];
-    const exercisesInProgram = usersPrograms.map((program) => program.exercises)
-    const exerciseIds = exercisesInProgram.flat().map((exercises) => exercises.exercise_id);
-    exerciseIds.forEach(async (exercise) => exerciseInfo.push(await getExerciseById(exercise)))
 
-    //Fått ut alla matchande övingars info. Nu försöka få in detta in i programs genom att göra en ny array = detailedPrograms
-    //const detailedPrograms = 
-    console.log(exerciseInfo)
+    setPrograms(usersPrograms)
+    
+    // let exerciseInfo = [];
+    // const exercisesInProgram = usersPrograms.map((program) => program.exercises)
+    // const exerciseIds = exercisesInProgram.flat().map((exercises) => exercises.exercise_id);
+    // for (const exercise of exerciseIds){
+    //   const fetchedExercise = await getExerciseById(exercise)
+    //   exerciseInfo.push(fetchedExercise)
+    // }
+    // exerciseInfo = exerciseInfo.flat()
+    // const flattenedExerciseInProgram = exercisesInProgram.flat()
+  
+    // const detailedPrograms = flattenedExerciseInProgram.map((exercise1) => {
+    //   const matchingExercises = exerciseInfo.find((exercise2) => exercise1.exercise_id === exercise2._id) 
+    //     if (matchingExercises){
+    //       return{ ...exercise1, ...matchingExercises}
+    //     }
+    //     return exercise1
+    // });
 
+    // setDetailedPrograms(detailedPrograms);
   };
+
+  const fetchDetailedPrograms = async () => {
+    const detailedPrograms = await getDetailedPrograms();
+
+    if (detailedPrograms === 401) {
+      setResponse('You are logged out, redirecting you to login-page');
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
+      return;
+    }
+
+    setDetailedPrograms(detailedPrograms)
+  }
 
   useEffect(() => {
     async function loadPage() {
     await fetchPrograms();
-    //fetchExerciseDetails();
+    fetchDetailedPrograms();
     }
     loadPage()
     // eslint-disable-next-line
   }, []);
 
-//fetch exercise details from the exercise collection and store it in detailed programs state
-  // const fetchExerciseDetails = async () => {
-
-  //   const allExercises = await getAllExercises();
-
-  //   if (allExercises === 401) {
-  //     setResponse('You are logged out, redirecting you to login-page');
-  //     setTimeout(() => {
-  //       navigate('/');
-  //     }, 4000);
-  //     return;
-  //   }
-  //   setExercises(allExercises);
-    
-
-  // //const exerciseIds = programs.map((program) => program.exercises.map(async (exercise) => {
-  //   //const exerciseDetails = await getExerciseById(exercise.exercise_id)
-    
-  //   //  })
-  //   //  )
-
-  //   // setDetailedPrograms(exerciseIds)
-  // };
-  //console.log(detailedPrograms)
 
   const deleteHandler = async (exerciseID) => {
     const id = exerciseID;
@@ -93,9 +94,14 @@ const HandlingExercises = () => {
           return (
             <div className='todoBox' key={program._id}>
               <h3>{program.programName}</h3>
-              {program.exercises?.map((exercise, index) => {
+              {detailedPrograms?.map((exercise, index) => {
                 return (
-                <p key={index}>{exercise.exercise_id}</p>)})}
+                  <div key={index}>
+                    <p>{exercise.exerciseName}</p>
+                    <p>Sets: {exercise.sets}</p>
+                    <p>Reps: {exercise.reps}</p>
+                  </div>
+                )})}
               <Link
                 className='editLink'
                 to={`/Exercises/${program._id}`}
