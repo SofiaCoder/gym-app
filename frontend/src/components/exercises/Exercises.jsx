@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './scss/Exercises.scss';
 import deleteExercise from './functions/deleteExercise';
-import { getPrograms } from './functions/getPrograms';
-import { getDetailedPrograms } from './functions/getDetailedPrograms';
+import { getPrograms } from '../programs/functions/getPrograms';
+import { getDetailedPrograms } from '../programs/functions/getDetailedPrograms';
 
 const HandlingExercises = () => {
   const [programs, setPrograms] = useState([]);
   //const [exercises, setExercises] = useState();
-  const [detailedPrograms, setDetailedPrograms] = useState();
+  const [detailedPrograms, setDetailedPrograms] = useState(null);
   const [response, setResponse] = useState();
   const navigate = useNavigate();
 
@@ -25,6 +25,20 @@ const HandlingExercises = () => {
     }
 
     setPrograms(usersPrograms)
+
+    let fetchDetailedPrograms = [];
+    for (const program of usersPrograms){
+      const fetchedProgram = await getDetailedPrograms(program._id);
+      if (fetchedProgram.length > 0) {
+        debugger
+       fetchDetailedPrograms.push(fetchedProgram);
+      } 
+     }
+
+     console.log(fetchDetailedPrograms)
+    setDetailedPrograms(fetchDetailedPrograms)
+    
+    
     
     // let exerciseInfo = [];
     // const exercisesInProgram = usersPrograms.map((program) => program.exercises)
@@ -47,24 +61,11 @@ const HandlingExercises = () => {
     // setDetailedPrograms(detailedPrograms);
   };
 
-  const fetchDetailedPrograms = async () => {
-    const detailedPrograms = await getDetailedPrograms();
-
-    if (detailedPrograms === 401) {
-      setResponse('You are logged out, redirecting you to login-page');
-      setTimeout(() => {
-        navigate('/');
-      }, 4000);
-      return;
-    }
-
-    setDetailedPrograms(detailedPrograms)
-  }
+ 
 
   useEffect(() => {
     async function loadPage() {
     await fetchPrograms();
-    fetchDetailedPrograms();
     }
     loadPage()
     // eslint-disable-next-line
@@ -90,18 +91,23 @@ const HandlingExercises = () => {
     <>
       <h3>{response}</h3>
       <div className='todoBoxes'>
-        {programs?.map((program) => {
+        {programs?.map((program, index) => {
           return (
             <div className='todoBox' key={program._id}>
               <h3>{program.programName}</h3>
-              {detailedPrograms?.map((exercise, index) => {
-                return (
-                  <div key={index}>
-                    <p>{exercise.exerciseName}</p>
-                    <p>Sets: {exercise.sets}</p>
-                    <p>Reps: {exercise.reps}</p>
-                  </div>
-                )})}
+              {detailedPrograms === null ? (
+                <p>Loading...</p>
+              ) : detailedPrograms.length === 0 ? (
+                <p>No exercises added in this program</p>
+              ) : (
+              detailedPrograms[index]?.map((exercise, index) => {
+                  return (
+                    <div key={index}>
+                      <p>{exercise.exerciseName}</p>
+                      <p>Sets: {exercise.sets}</p>
+                      <p>Reps: {exercise.reps}</p>
+                    </div>
+                )}))}
               <Link
                 className='editLink'
                 to={`/Exercises/${program._id}`}
