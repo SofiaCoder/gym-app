@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './scss/Exercises.scss';
 import deleteExercise from './functions/deleteExercise';
 import { getPrograms } from '../programs/functions/getPrograms';
 import { getDetailedPrograms } from '../programs/functions/getDetailedPrograms';
+import { cap } from '../../global functions/uppercaseCaps';
 
 const HandlingExercises = () => {
   const [programs, setPrograms] = useState([]);
-  //const [exercises, setExercises] = useState();
   const [detailedPrograms, setDetailedPrograms] = useState(null);
   const [response, setResponse] = useState();
   const navigate = useNavigate();
 
   //Fetch all the users training programs and store it in programs
-  const fetchPrograms = async () => {
+  const fetchPrograms = useCallback(async () => {
     const usersPrograms = await getPrograms();
 
     if (usersPrograms === 401) {
@@ -24,52 +24,28 @@ const HandlingExercises = () => {
       return;
     }
 
-    setPrograms(usersPrograms)
-
-    let fetchDetailedPrograms = [];
-    for (const program of usersPrograms) {
-      const fetchedProgram = await getDetailedPrograms(program._id);
-      if (fetchedProgram.length > 0) {
-        debugger
-        fetchDetailedPrograms.push(fetchedProgram);
-      }
-    }
-
-    console.log(fetchDetailedPrograms)
-    setDetailedPrograms(fetchDetailedPrograms)
-
-
-
-    // let exerciseInfo = [];
-    // const exercisesInProgram = usersPrograms.map((program) => program.exercises)
-    // const exerciseIds = exercisesInProgram.flat().map((exercises) => exercises.exercise_id);
-    // for (const exercise of exerciseIds){
-    //   const fetchedExercise = await getExerciseById(exercise)
-    //   exerciseInfo.push(fetchedExercise)
+    // let fetchDetailedPrograms = [];
+    // for (const program of usersPrograms) {
+    //   const fetchedProgram = await getDetailedPrograms(program._id);
+    //   if (fetchedProgram) {
+    //     fetchDetailedPrograms.push(fetchedProgram);
+    //   }
     // }
-    // exerciseInfo = exerciseInfo.flat()
-    // const flattenedExerciseInProgram = exercisesInProgram.flat()
 
-    // const detailedPrograms = flattenedExerciseInProgram.map((exercise1) => {
-    //   const matchingExercises = exerciseInfo.find((exercise2) => exercise1.exercise_id === exercise2._id) 
-    //     if (matchingExercises){
-    //       return{ ...exercise1, ...matchingExercises}
-    //     }
-    //     return exercise1
-    // });
 
-    // setDetailedPrograms(detailedPrograms);
-  };
+    const temp = await Promise.all(usersPrograms.flatMap(p => getDetailedPrograms(p._id)))
+    const detailedPrograms = temp.filter(x => !!x) // (x => x != null)
+
+    setPrograms(usersPrograms)
+    setDetailedPrograms(detailedPrograms)
+
+    }, [navigate]);
 
 
 
   useEffect(() => {
-    async function loadPage() {
-      await fetchPrograms();
-    }
-    loadPage()
-    // eslint-disable-next-line
-  }, []);
+    fetchPrograms();
+  }, [fetchPrograms]);
 
 
   const deleteHandler = async (exerciseID) => {
@@ -87,6 +63,7 @@ const HandlingExercises = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+
   return (
     <>
       <h3>{response}</h3>
@@ -94,16 +71,16 @@ const HandlingExercises = () => {
         {programs?.map((program, index) => {
           return (
             <div className='todoBox' key={program._id}>
-              <h3>{program.programName}</h3>
-              {detailedPrograms === null ? (
+              <h3>{cap(program.programName)}</h3>
+              {detailedPrograms == null ? (
                 <p>Loading...</p>
-              ) : detailedPrograms.length === 0 ? (
+              ) : detailedPrograms[index].length === 0 ?  (
                 <p>No exercises added in this program</p>
               ) : (
                 detailedPrograms[index]?.map((exercise, index) => {
                   return (
                     <div key={index}>
-                      <p>{exercise.exerciseName}</p>
+                      <h4>{cap(exercise.exerciseName)}</h4>
                       <p>Sets: {exercise.sets}</p>
                       <p>Reps: {exercise.reps}</p>
                     </div>
