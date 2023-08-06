@@ -4,12 +4,15 @@ const { ObjectId } = require('mongodb');
 exports.getDetailedPrograms = async function getDetailedPrograms(req, res) {
   try {
     const userID = req.userID;
+    const programID = await req.params.programID;
+
+    const programIdToGet = new ObjectId(programID)
 
     const { programCollection, exerciseCollection } = await main();
 
     const programs = await programCollection
       .find(
-        { user_id: userID },
+        { _id: programIdToGet, user_id: userID },
         { projection: { programName: 1, exercises: 1 } }
       )
       .toArray();
@@ -53,7 +56,7 @@ exports.getDetailedPrograms = async function getDetailedPrograms(req, res) {
     });
 
     if (detailedPrograms.length === 0) {
-      res.status(404).send('There is no programs');
+      return res.status(404).send('There is no exercises in this programs');
     } else {
       res.status(200).json(detailedPrograms);
     }
