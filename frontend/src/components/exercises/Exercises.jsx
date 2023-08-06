@@ -27,19 +27,19 @@ const HandlingExercises = () => {
     setPrograms(usersPrograms)
 
     let fetchDetailedPrograms = [];
-    for (const program of usersPrograms){
+    for (const program of usersPrograms) {
       const fetchedProgram = await getDetailedPrograms(program._id);
       if (fetchedProgram.length > 0) {
         debugger
-       fetchDetailedPrograms.push(fetchedProgram);
-      } 
-     }
+        fetchDetailedPrograms.push(fetchedProgram);
+      }
+    }
 
-     console.log(fetchDetailedPrograms)
+    console.log(fetchDetailedPrograms)
     setDetailedPrograms(fetchDetailedPrograms)
-    
-    
-    
+
+
+
     // let exerciseInfo = [];
     // const exercisesInProgram = usersPrograms.map((program) => program.exercises)
     // const exerciseIds = exercisesInProgram.flat().map((exercises) => exercises.exercise_id);
@@ -49,7 +49,7 @@ const HandlingExercises = () => {
     // }
     // exerciseInfo = exerciseInfo.flat()
     // const flattenedExerciseInProgram = exercisesInProgram.flat()
-  
+
     // const detailedPrograms = flattenedExerciseInProgram.map((exercise1) => {
     //   const matchingExercises = exerciseInfo.find((exercise2) => exercise1.exercise_id === exercise2._id) 
     //     if (matchingExercises){
@@ -61,11 +61,11 @@ const HandlingExercises = () => {
     // setDetailedPrograms(detailedPrograms);
   };
 
- 
+
 
   useEffect(() => {
     async function loadPage() {
-    await fetchPrograms();
+      await fetchPrograms();
     }
     loadPage()
     // eslint-disable-next-line
@@ -100,14 +100,15 @@ const HandlingExercises = () => {
               ) : detailedPrograms.length === 0 ? (
                 <p>No exercises added in this program</p>
               ) : (
-              detailedPrograms[index]?.map((exercise, index) => {
+                detailedPrograms[index]?.map((exercise, index) => {
                   return (
                     <div key={index}>
                       <p>{exercise.exerciseName}</p>
                       <p>Sets: {exercise.sets}</p>
                       <p>Reps: {exercise.reps}</p>
                     </div>
-                )}))}
+                  )
+                }))}
               <Link
                 className='editLink'
                 to={`/Exercises/${program._id}`}

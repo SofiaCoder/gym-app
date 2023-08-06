@@ -20,7 +20,7 @@ const LoginForm = () => {
     setResponse(data);
     if (res.status === 200) {
       localStorage.setItem('username', username);
-      window.location.href = '/ExercisePage';
+      window.location.href = '/ProgramsPage';
     }
   };
 

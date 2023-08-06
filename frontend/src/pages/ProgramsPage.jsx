@@ -6,7 +6,7 @@ import { FriendPage } from './FriendPage';
 import { ProgramForm } from '../components/Form/ProgramForm';
 import { postProgram } from '../components/programs/functions/postProgram';
 
-const ExercisePage = () => {
+const ProgramsPage = () => {
   const user = localStorage.getItem('username');
   return (
     <div className='ExercisePage'>
@@ -26,4 +26,4 @@ const ExercisePage = () => {
   );
 };
 
-export default ExercisePage;
+export default ProgramsPage;
