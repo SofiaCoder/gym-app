@@ -8,7 +8,7 @@ const { checkAuthentication } = require('../middleware/middleware');
 programRouter.use(checkAuthentication);
 
 programRouter.get('/', getUsersPrograms);
-programRouter.get('/detailed', getDetailedPrograms);
+programRouter.get('/detailed/:programID', getDetailedPrograms);
 programRouter.post('/', createPrograms);
 programRouter.patch('/', addExercisesToProgram);
 
