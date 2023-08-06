@@ -3,7 +3,7 @@ const main = require('../../database');
 const joi = require('joi');
 
 const schema = joi.object({
-  programName: joi.string()
+  programName: joi.string().required()
 });
 
 exports.createPrograms = async function createPrograms(req, res) {

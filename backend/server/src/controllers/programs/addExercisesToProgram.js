@@ -3,14 +3,14 @@ const main = require('../../database');
 const joi = require('joi');
 
 const schema = joi.object({
-  programId: joi.string(),
+  programId: joi.string().required(),
   exerciseToInsert: joi.object({
-    exerciseId: joi.string(),
-    repNum: joi.number(),
-    setNum: joi.number(),
+    exerciseId: joi.string().required(),
+    repNum: joi.number().required(),
+    setNum: joi.number().required(),
     weightNum: joi.number(),
-    rpeNum: joi.number(),
-  }),
+    rpeNum: joi.number().required(),
+  }).required(),
 });
 
 exports.addExercisesToProgram = async function addExercisesToProgram(req, res) {
