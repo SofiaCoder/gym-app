@@ -4,13 +4,11 @@ const joi = require('joi');
 
 const schema = joi.object({
   programId: joi.string().required(),
-  exerciseToInsert: joi.object({
-    exerciseId: joi.string().required(),
-    repNum: joi.number().required(),
-    setNum: joi.number().required(),
-    weightNum: joi.number(),
-    rpeNum: joi.number().required(),
-  }).required(),
+  exerciseId: joi.string().required(),
+  repNum: joi.number().required(),
+  setNum: joi.number().required(),
+  weightNum: joi.number(),
+  rpeNum: joi.number().required()
 });
 
 exports.addExercisesToProgram = async function addExercisesToProgram(req, res) {
@@ -22,9 +20,7 @@ exports.addExercisesToProgram = async function addExercisesToProgram(req, res) {
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
-    const { programId, exerciseToInsert } = value;
-
-    const { exerciseId, repNum, setNum, weightNum, rpeNum } = exerciseToInsert;
+    const { programId, exerciseId, repNum, setNum, weightNum, rpeNum} = value;
 
     const exerciseBody = {
       exercise_id: new ObjectId(exerciseId),
