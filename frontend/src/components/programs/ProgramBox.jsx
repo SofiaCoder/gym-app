@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './scss/Exercises.scss';
-import deleteExercise from './functions/deleteExercise';
-import { getPrograms } from '../programs/functions/getPrograms';
-import { getDetailedPrograms } from '../programs/functions/getDetailedPrograms';
-import { cap } from '../../global functions/uppercaseCaps';
+import './scss/ProgramBox.scss';
+import deleteExercise from '../exercises/functions/deleteExercise';
+import { getPrograms } from './functions/getPrograms';
+import { getDetailedPrograms } from './functions/getDetailedPrograms';
+import { cap } from '../../globalFunctions/uppercaseCaps';
+import deleteProgram from './functions/deleteProgram';
+import { ExerciseToProgramForm } from '../Form/ExerciseToProgramForm';
+import { postExerciseToProgram } from './functions/postExerciseToProgram';
+import deleteExerciseFromProgram from './functions/deleteExerciseFromProgram';
 
-const HandlingExercises = () => {
+const ProgramBox = () => {
   const [programs, setPrograms] = useState([]);
   const [detailedPrograms, setDetailedPrograms] = useState(null);
   const [response, setResponse] = useState();
@@ -32,7 +36,6 @@ const HandlingExercises = () => {
     //   }
     // }
 
-
     const temp = await Promise.all(usersPrograms.flatMap(p => getDetailedPrograms(p._id)))
     const detailedPrograms = temp.filter(x => !!x) // (x => x != null)
 
@@ -41,16 +44,13 @@ const HandlingExercises = () => {
 
     }, [navigate]);
 
-
-
   useEffect(() => {
     fetchPrograms();
   }, [fetchPrograms]);
 
-
-  const deleteHandler = async (exerciseID) => {
-    const id = exerciseID;
-    const response = await deleteExercise(id);
+  const deleteHandler = async (programId) => {
+    const id = programId;
+    const response = await deleteProgram(id);
     setResponse(response);
     scrollTop();
     setTimeout(() => {
@@ -59,18 +59,26 @@ const HandlingExercises = () => {
     }, 2000);
   };
 
+  const deleteExerciseHandler = async (programId, exerciseIndex) => {
+    const response = await deleteExerciseFromProgram(programId, exerciseIndex);
+    setResponse(response);
+    setTimeout(() => {
+      fetchPrograms();
+      setResponse('');
+    }, 2000);
+  }
+
   const scrollTop = function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-
   return (
     <>
       <h3>{response}</h3>
-      <div className='todoBoxes'>
+      <div className='programBoxes'>
         {programs?.map((program, index) => {
           return (
-            <div className='todoBox' key={program._id}>
+            <div className='programBox' key={program._id}>
               <h3>{cap(program.programName)}</h3>
               {detailedPrograms == null ? (
                 <p>Loading...</p>
@@ -83,13 +91,23 @@ const HandlingExercises = () => {
                       <h4>{cap(exercise.exerciseName)}</h4>
                       <p>Sets: {exercise.sets}</p>
                       <p>Reps: {exercise.reps}</p>
+                      <p>Weight: {exercise.weight}</p>
+                      <p>RPE: {exercise.RPE}</p>
+                      <p>E1RM: {exercise.E1RM}</p>
+                      <p>Total Weight: {exercise.totalWeight}</p>
+                      <button onClick={() => {deleteExerciseHandler(program._id, index)}}>Delete exercise</button>
                     </div>
                   )
                 }))}
+              <ExerciseToProgramForm 
+                programId ={program._id}
+                submitFunction={postExerciseToProgram}
+                btnText='Add'
+              />
               <Link
                 className='editLink'
-                to={`/Exercises/${program._id}`}
-                state={program}
+                to={`/Programs/${program._id}`}
+                state={detailedPrograms}
               >
                 Edit
               </Link>
@@ -109,4 +127,4 @@ const HandlingExercises = () => {
   );
 };
 
-export default HandlingExercises;
+export default ProgramBox;

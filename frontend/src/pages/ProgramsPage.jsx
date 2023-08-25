@@ -1,10 +1,10 @@
-import Exercises from '../components/exercises/Exercises';
 import { ExerciseForm } from '../components/Form/ExerciseForm';
 import './scss/ExercisePage.scss';
-import { postExercise } from '../components/exercises/functions/postExercise.js';
+import { postNewExercise } from '../components/exercises/functions/postNewExercise.js';
 import { FriendPage } from './FriendPage';
 import { ProgramForm } from '../components/Form/ProgramForm';
 import { postProgram } from '../components/programs/functions/postProgram';
+import ProgramBox from '../components/programs/ProgramBox';
 
 const ProgramsPage = () => {
   const user = localStorage.getItem('username');
@@ -20,7 +20,7 @@ const ProgramsPage = () => {
         submitFunction={postExercise}
         btnText='Add'
       /> */}
-      <Exercises className='Exercises' />
+      <ProgramBox className='Exercises' />
       <FriendPage className='friendPage' />
     </div>
   );

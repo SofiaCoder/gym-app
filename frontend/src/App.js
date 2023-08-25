@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import { EditableExercise } from './pages/EditableExercise';
+import { EditableProgram } from './pages/EditProgramPage';
 import ProgramsPage from './pages/ProgramsPage';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <Route path='/' element={<LoginPage />} />
         <Route path='/RegisterPage' element={<RegisterPage />} />
         <Route path='/ProgramsPage' element={<ProgramsPage />} />
-        <Route path='/Exercises/:id' element={<EditableExercise />} />
+        <Route path='/Programs/:id' element={<EditableProgram />} />
       </Routes>
     </div>
   );
