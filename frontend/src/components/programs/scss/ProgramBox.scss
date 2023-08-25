@@ -1,0 +1,52 @@
+.programBoxes {
+    display: flex;
+    flex-wrap: wrap;
+
+    .programBox {
+        background: rgb(5, 79, 98);
+        color:aliceblue;
+        max-width: 30vw;
+        min-width: 20vw;
+        box-shadow: 5px 5px 5px rgb(3, 41, 50);
+        margin: 1em;
+        padding: 1rem;
+        border-radius: 5px;
+
+        .deleteBtn {
+            background-color: rgb(228, 235, 241);
+            padding: 3.6px 4px 2px 4px;
+            border-radius: 2px;
+            border: solid 1px black;
+        }
+
+        .editLink {
+            border: solid 1px black;
+            background-color: rgb(228, 235, 241);
+            padding: 2px 4px;
+            border-radius: 2px;
+            text-decoration: none;
+            margin-inline: 4px;
+        }
+        .editLink, .deleteBtn {
+            vertical-align:baseline;
+            &:hover {
+                background-color: rgb(148, 175, 197);
+            }
+        }
+    }
+
+    @media screen and (max-width: 646px) {
+        .todoBox {
+          width: 35vw;
+          min-width: none;
+          max-width: none;
+        }
+      }
+      @media screen and (max-width: 512px) {
+        .todoBox {
+          width: 90vw;
+        }
+      }
+    
+}
+
