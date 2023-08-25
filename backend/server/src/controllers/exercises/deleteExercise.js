@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 const joi = require('joi');
 
 const schema = joi.object({
-  exerciseID: joi.string(),
+  exerciseId: joi.string(),
 });
 
 exports.deleteExercise = async function deleteExercise(req, res) {
@@ -14,11 +14,11 @@ exports.deleteExercise = async function deleteExercise(req, res) {
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
-    const { exerciseID } = value;
-    const exerciseIDtoDelete = new ObjectId(exerciseID);
+    const { exerciseId } = value;
+    const exerciseIdToDelete = new ObjectId(exerciseId);
 
     const result = await exerciseCollection.deleteOne({
-      _id: exerciseIDtoDelete,
+      _id: exerciseIdToDelete,
     });
     if (result.deletedCount === 1) {
       res.status(200).send('Exercise successfully deleted');
