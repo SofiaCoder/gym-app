@@ -1,10 +1,10 @@
 const deleteExercises = async (id) => {
-    const exerciseID = id
+    const exerciseId = id
     
     const res = await fetch('http://localhost:8080/exercises', {
         method: 'DELETE',
         credentials: 'include',
-        body: JSON.stringify({exerciseID}),
+        body: JSON.stringify({exerciseId}),
         headers: {
             'content-type': 'application/json'
         }
