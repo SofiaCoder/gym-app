@@ -27,7 +27,8 @@ const ProgramForm = ({ title, group, submitFunction, btnText }) => {
 
   return (
     <>
-      <div className='exerciseForm'>
+      <div className='programForm'>
+        <h2>Create new program</h2>
         <form onSubmit={submitHandler}>
           <label htmlFor='task'>Program: </label>
           <input

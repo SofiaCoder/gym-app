@@ -3,16 +3,17 @@
     grid-template-columns: 5fr 1fr;
     grid-template-areas: 
         "header friendPage"
+        "programForm friendPage"
         "exerciseForm friendPage"
         "Exercises friendPage"
-        "Exercises friendPage";
+        "Exercises ..........";
 
     
     h1 {
         grid-area: header;
     }
-    .exerciseForm {
-        grid-area: exerciseForm;
+    .programForm {
+        grid-area: programForm;
     }
     .Exercises {
         grid-area: Exercises;
@@ -27,6 +28,7 @@
     grid-template-columns: 3fr 1fr;
     grid-template-areas: 
         "header friendPage"
+        "programForm friendPage"
         "exerciseForm friendPage"
         "Exercises friendPage"
         "Exercises friendPage";
@@ -36,6 +38,7 @@
     .ExercisePage {
         grid-template-areas: 
             "header"
+            "programForm"
             "exerciseForm"
             "Exercises"
             "Exercises"

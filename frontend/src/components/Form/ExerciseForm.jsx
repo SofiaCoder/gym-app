@@ -6,6 +6,8 @@ const ExerciseForm = ({ title, group, submitFunction, btnText }) => {
   const [muscleGroup, setMuscleGroup] = useState('');
   const [description, setDescription] = useState('');
   const [response, setResponse] = useState();
+  const [toggle, setToggle] = useState(true);
+  const [buttonText, setButtonText] = useState('Add exercise');
 
   useEffect(() => {
     const startSetHandler = () => {
@@ -30,9 +32,21 @@ const ExerciseForm = ({ title, group, submitFunction, btnText }) => {
     }, 2000);
   };
 
+  const toggleHandler = () => {
+    if (toggle === true){
+      setToggle(false)
+      setButtonText('Hide')
+      return;
+    }
+    setToggle(true)
+    setButtonText('Add exercise')
+  }
+
   return (
     <>
-      <div className='exerciseForm'>
+      <button class="showBtn" onClick={toggleHandler}>{buttonText}</button>
+      <div className='exerciseForm' id={toggle ? 'hide' : 'show'}>
+        <h2>Add new exercise</h2>
         <form onSubmit={submitHandler}>
           <label htmlFor='task'>Exercise: </label>
           <input

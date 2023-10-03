@@ -12,14 +12,14 @@ const ProgramsPage = () => {
     <div className='ExercisePage'>
       <h1>{user}'s training</h1>
       <ProgramForm 
-        className='exerciseForm'
+        className='programForm'
         submitFunction={postProgram}
         btnText='Add' />
-      {/* <ExerciseForm
+      <ExerciseForm
         className='exerciseForm'
-        submitFunction={postExercise}
+        submitFunction={postNewExercise}
         btnText='Add'
-      /> */}
+      />
       <ProgramBox className='Exercises' />
       <FriendPage className='friendPage' />
     </div>
